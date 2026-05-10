@@ -2,8 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock That Body - Remix Sync</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background-color: #000;
             color: #00f3ff;
@@ -12,9 +19,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            padding: 20px;
         }
 
         /* Capa del GIF de fondo */
@@ -27,47 +35,132 @@
             background-image: url('https://i.pinimg.com/originals/7f/d4/93/7fd493d029e88f51324cc8e3ebb8d403.gif');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             z-index: -1;
-            opacity: 0; /* Invisible al inicio */
+            opacity: 0;
             transition: opacity 1s ease-in-out;
-            filter: brightness(0.4); /* Oscurece un poco el GIF para que la letra se lea bien */
+            filter: brightness(0.4);
         }
 
         #lyric-box {
-            height: 120px;
+            min-height: 100px;
+            max-height: 150px;
             text-align: center;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             font-weight: bold;
             text-shadow: 0 0 20px #000, 0 0 10px #00f3ff;
-            max-width: 85%;
-            margin-bottom: 40px;
+            max-width: 90%;
+            margin-bottom: 30px;
+            margin-top: 20px;
             z-index: 1;
+            word-wrap: break-word;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .player-wrapper {
-            background: rgba(17, 17, 17, 0.8);
-            padding: 15px;
+            background: rgba(17, 17, 17, 0.9);
+            padding: 15px 20px;
             border-radius: 50px;
             border: 2px solid #00f3ff;
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
             z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: center;
         }
 
         audio {
+            width: 100%;
+            max-width: 450px;
             filter: invert(100%) hue-rotate(180deg);
         }
 
         .cursor {
             display: inline-block;
-            width: 12px;
+            width: 8px;
             height: 1.2em;
             background-color: #ff00ff;
-            margin-left: 8px;
+            margin-left: 5px;
             animation: blink 0.7s infinite;
             vertical-align: middle;
         }
 
-        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Media Queries para diferentes tamaños de pantalla */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                min-height: 100vh;
+            }
+
+            #lyric-box {
+                font-size: clamp(1.2rem, 4vw, 1.8rem);
+                margin-bottom: 25px;
+                margin-top: 15px;
+                min-height: 80px;
+                max-width: 95%;
+            }
+
+            .player-wrapper {
+                padding: 12px 15px;
+                max-width: 100%;
+            }
+
+            audio {
+                max-width: 100%;
+            }
+
+            .cursor {
+                width: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            #lyric-box {
+                font-size: clamp(1rem, 3.5vw, 1.5rem);
+                margin-bottom: 20px;
+                margin-top: 10px;
+                min-height: 70px;
+                max-width: 98%;
+            }
+
+            .player-wrapper {
+                padding: 10px 12px;
+                border-radius: 40px;
+            }
+
+            audio {
+                max-width: 100%;
+            }
+
+            .cursor {
+                width: 5px;
+            }
+        }
+
+        /* Tablets en orientación horizontal */
+        @media (max-width: 1024px) and (orientation: landscape) {
+            body {
+                min-height: auto;
+                padding: 10px;
+            }
+
+            #lyric-box {
+                margin-bottom: 15px;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -120,11 +213,11 @@
 
         // ACTIVAR FONDO Y SINCRONIZACIÓN
         audio.onplay = () => {
-            bg.style.opacity = "1"; // Aparece el GIF suavemente
+            bg.style.opacity = "1";
         };
 
         audio.onpause = () => {
-            bg.style.opacity = "0.3"; // Se oscurece un poco si pausas
+            bg.style.opacity = "0.3";
         };
 
         audio.addEventListener('timeupdate', () => {
