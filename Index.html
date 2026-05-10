@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Rock That Body - Remix Sync</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock That Body - Remix</title>
     <style>
         body {
             background-color: #000;
@@ -16,129 +17,75 @@
             margin: 0;
             overflow: hidden;
         }
-
-        /* Capa del GIF de fondo */
         #bg-gif {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://i.pinimg.com/originals/7f/d4/93/7fd493d029e88f51324cc8e3ebb8d403.gif');
             background-size: cover;
             background-position: center;
             z-index: -1;
-            opacity: 0; /* Invisible al inicio */
-            transition: opacity 1s ease-in-out;
-            filter: brightness(0.4); /* Oscurece un poco el GIF para que la letra se lea bien */
+            opacity: 0;
+            transition: opacity 1s;
+            filter: brightness(0.4);
         }
-
         #lyric-box {
-            height: 120px;
+            height: 140px;
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            text-shadow: 0 0 20px #000, 0 0 10px #00f3ff;
-            max-width: 85%;
-            margin-bottom: 40px;
+            text-shadow: 0 0 15px #00f3ff;
+            max-width: 90%;
             z-index: 1;
         }
-
         .player-wrapper {
-            background: rgba(17, 17, 17, 0.8);
+            background: rgba(20, 20, 20, 0.8);
             padding: 15px;
             border-radius: 50px;
             border: 2px solid #00f3ff;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
             z-index: 1;
+            width: 85%;
         }
-
-        audio {
-            filter: invert(100%) hue-rotate(180deg);
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 12px;
-            height: 1.2em;
-            background-color: #ff00ff;
-            margin-left: 8px;
-            animation: blink 0.7s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blink { 50% { opacity: 0; } }
+        audio { width: 100%; filter: invert(100%); }
     </style>
 </head>
 <body>
-
-    <!-- Fondo que se activará con JS -->
     <div id="bg-gif"></div>
-
-    <div id="lyric-box">Presiona PLAY para empezar</div>
-
+    <div id="lyric-box">¡Toca PLAY para empezar! 🎵</div>
     <div class="player-wrapper">
         <audio id="music" controls>
-            <source src="music/The Black Eyed Peas - Rock That Body (Zusebi Remix) [TikTok].mp3" type="audio/mpeg">
             <source src="cancion.mp3" type="audio/mpeg">
         </audio>
     </div>
-
     <script>
         const audio = document.getElementById('music');
         const box = document.getElementById('lyric-box');
         const bg = document.getElementById('bg-gif');
 
         const lyrics = [
-            { time: 0.1,  text: "I want to... I want to dance in the lights" },
-            { time: 3.5,  text: "I want to... I want to rock your body" },
-            { time: 7.0,  text: "I want to go... I want to go for a ride" },
+            { time: 0.1,  text: "I want to... dance in the lights" },
+            { time: 3.5,  text: "I want to... rock your body" },
+            { time: 7.0,  text: "I want to go... for a ride" },
             { time: 10.5, text: "Music and rock your body" },
             { time: 14.0, text: "I want to rock your body" },
-            { time: 17.5, text: "I want to go... I want to go for..." },
-            { time: 21.0, text: "Let the music and rock your body" },
             { time: 24.0, text: "Rock. Come on. Come on. Rock." },
-            { time: 27.5, text: "Rock your body. Rock." },
-            { time: 34.0, text: "Come on. Come on. Rock." },
             { time: 36.0, text: "Rock that body. Come on. Come on." },
-            { time: 39.0, text: "Rock your body. Let me see your body." },
-            { time: 44.0, text: "Shaking it from the bottom to top." },
-            { time: 46.0, text: "Watch the DJ drop. We be the ones to make it hot!" },
-            { time: 51.0, text: "Electric shock. Energy like a billion watts. BOOM!" }
+            { time: 46.0, text: "Watch the DJ drop. We make it hot!" },
+            { time: 51.0, text: "Electric shock. Billion watts. BOOM!" }
         ];
 
         let currentIndex = -1;
-
-        async function typeWriter(text) {
-            box.innerHTML = ""; 
-            for (let char of text) {
-                box.innerHTML += char;
-                await new Promise(r => setTimeout(r, 35)); 
-            }
-            box.innerHTML += '<span class="cursor"></span>';
+        async function type(t) {
+            box.innerHTML = "";
+            for (let c of t) { box.innerHTML += c; await new Promise(r => setTimeout(r, 40)); }
         }
-
-        // ACTIVAR FONDO Y SINCRONIZACIÓN
-        audio.onplay = () => {
-            bg.style.opacity = "1"; // Aparece el GIF suavemente
-        };
-
-        audio.onpause = () => {
-            bg.style.opacity = "0.3"; // Se oscurece un poco si pausas
-        };
-
-        audio.addEventListener('timeupdate', () => {
-            const currentTime = audio.currentTime;
-            let line = lyrics.find((l, i) => {
-                const next = lyrics[i + 1];
-                return currentTime >= l.time && (!next || currentTime < next.time);
-            });
-
+        audio.onplay = () => { bg.style.opacity = "1"; };
+        audio.ontimeupdate = () => {
+            let line = lyrics.find((l, i) => audio.currentTime >= l.time && (!lyrics[i+1] || audio.currentTime < lyrics[i+1].time));
             if (line && lyrics.indexOf(line) !== currentIndex) {
                 currentIndex = lyrics.indexOf(line);
-                typeWriter(line.text);
+                type(line.text);
             }
-        });
+        };
     </script>
 </body>
 </html>
