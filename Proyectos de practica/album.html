@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álbum Tecno-Galáctico de Jhoan Meza</title>
+    <style>
+        /* 1. ESTILOS GENERALES Y FONDO TECNO-GALÁCTICO */
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #e0f7fa;
+            text-align: center;
+            padding: 20px;
+            overflow-y: scroll; 
+            margin: 0;
+            position: relative;
+            background-color: #1a446b; 
+            background-image: url('https://images.unsplash.com/photo-1601004944908-0130089855b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: -1;
+        }
+
+        h1 {
+            color: #2e9191ff; 
+            margin-bottom: 20px; 
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-size: 3.5em; 
+            text-shadow: 0 0 15px #00ffff, 0 0 25px rgba(255, 69, 0, 0.8); 
+            animation: pulseTitle 2s infinite alternate; 
+        }
+
+        @keyframes pulseTitle {
+            from { text-shadow: 0 0 10px #00ffff, 0 0 15px rgba(255, 69, 0, 0.6); }
+            to { text-shadow: 0 0 20px #00ffff, 0 0 30px rgba(255, 69, 0, 0.9); }
+        }
+
+        .dedication {
+            font-size: 1.3em;
+            color: #b3e5fc; 
+            margin-bottom: 40px; /* Reducido un poco para hacer espacio al audio */
+            padding: 15px 30px;
+            background-color: rgba(10, 25, 40, 0.7); 
+            display: inline-block;
+            border-radius: 10px;
+            border: 1px solid #00bfff; 
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.7), 0 0 20px rgba(255, 140, 0, 0.5);
+            max-width: 800px; 
+            line-height: 1.6;
+        }
+
+        /* 2. ESTILOS DEL REPRODUCTOR DE AUDIO */
+        .audio-container {
+            margin: 0 auto 50px auto;
+            padding: 15px 25px;
+            background-color: rgba(10, 25, 40, 0.85); /* Fondo oscuro translúcido */
+            border: 1px solid #00ffff; /* Borde cian */
+            border-radius: 30px; /* Bordes redondeados tipo cápsula */
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 10px rgba(255, 69, 0, 0.3); /* Resplandor dual */
+            display: inline-block;
+            backdrop-filter: blur(5px); /* Efecto cristal */
+            transition: transform 0.3s ease;
+        }
+
+        .audio-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 15px rgba(255, 69, 0, 0.5);
+        }
+
+        .audio-container p {
+            margin: 0 0 10px 0;
+            color: #b3e5fc;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.8);
+        }
+
+        audio {
+            border-radius: 20px;
+            height: 35px;
+            outline: none;
+            width: 250px;
+        }
+
+        .reproduction-music {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .reproduction-music h1 {
+            margin: 10px 0;
+            font-size: 1.5em;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .reproduction-music p {
+            margin: 5px 0;
+            color: #b3e5fc;
+            font-size: 1em;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .player-controls button {
+            padding: 10px 20px;
+            background: rgba(0, 191, 255, 0.2);
+            border: 1px solid #00ffff;
+            color: #e0f7fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .player-controls button:hover {
+            background: rgba(0, 191, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .player-controls button:active {
+            transform: scale(0.95);
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 300px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(0, 191, 255, 0.3);
+            outline: none;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00ffff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+        }
+
+        .progress-bar::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00ffff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+        }
+
+        /* 3. ESTILOS DE GALERÍA Y ANIMACIÓN DE PRESENTACIÓN */
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px; 
+            max-width: 1400px; 
+            margin: 0 auto 70px auto; /* Ajuste de margen superior */
+            position: relative;
+            z-index: 10;
+        }
+
+        .photo-frame {
+            background-color: rgba(255, 255, 255, 0.1); 
+            padding: 20px; 
+            border: 2px solid #00bfff; 
+            border-radius: 12px; 
+            box-shadow: 0 0 10px #00bfff, 0 0 20px rgba(255, 165, 0, 0.6); 
+            transition: all 0.6s ease-in-out; 
+            max-width: 380px; 
+            flex-grow: 1; 
+            
+            opacity: 0; 
+            transform: translateY(50px) scale(0.9) rotateZ(5deg);
+            animation-name: slideIn; 
+            animation-duration: 1.8s;
+            animation-fill-mode: forwards;
+            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+        }
+        
+        .photo-gallery figure:nth-child(1) { animation-delay: 0.5s; }
+        .photo-gallery figure:nth-child(2) { animation-delay: 1.0s; }
+        .photo-gallery figure:nth-child(3) { animation-delay: 1.5s; }
+        .photo-gallery figure:nth-child(4) { animation-delay: 2.0s; }
+        
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(0.8) rotateZ(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotateZ(0deg);
+            }
+        }
+        
+        .photo-frame:hover {
+            transform: scale(1.05) rotateZ(-3deg); 
+            box-shadow: 0 0 20px #0bad5cff, 0 0 30px rgba(121, 47, 20, 0.7), 0 0 40px rgba(0, 255, 255, 0.5); 
+            background-color: rgba(255, 255, 255, 0.15); 
+        }
+
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px; 
+            border: 1px solid rgba(0, 255, 255, 0.4); 
+        }
+
+        figcaption {
+            margin-top: 15px;
+            font-style: italic;
+            color: #b3e5fc; 
+            font-size: 1.15em;
+            text-shadow: 0 0 8px rgba(50, 95, 95, 0.5); 
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Álbum Tecno-Galáctico de Jhoan Meza</h1>
+    
+    <p class="dedication">
+        ¡Bienvenido a mis fotos de recuerdo! (producido por frank.JM)  
+    </p>
+
+    <div class="audio-container">
+        <p>🎵 Pista Galáctica 🎵</p>
+        <audio id="cancion" loop autoplay>
+            <source src="(35-52hz) Modern Talking - Brother Louie (Rebassed)_256k.mp3" type="audio/mpeg">
+            Tu navegador no soporta el reproductor de audio.
+        </audio>
+        <div class="reproduction-music">
+            <h1>Cargando...</h1>
+            <p>Artista desconocido</p>
+        </div>
+        <div class="player-controls">
+            <button class="atras">⏮️ Atrás</button>
+            <button class="boton-reproducir-pausar">
+                <i class="bi bi-play-fill" id="iconoControl"></i> Play
+            </button>
+            <button class="adelante">Adelante ⏭️</button>
+        </div>
+        <input type="range" id="progreso" min="0" max="100" value="0" class="progress-bar">
+    </div>
+
+    <div class="photo-gallery">
+        <figure class="photo-frame">
+            <img src="475011571_2021070281695888_9017560917202540751_n.jpg" alt="Recuerdo 1">
+            <figcaption>Fotos de recuerdos - Jhoan Meza 6</figcaption>
+        </figure>
+
+        <figure class="photo-frame">
+            <img src="60067639_632769103859353_2721895438910226432_n.jpg" alt="Recuerdo 2">
+            <figcaption>Fotos de recuerdos - Jhoan Meza 6</figcaption>
+        </figure>
+
+        <figure class="photo-frame">
+            <img src="87598120_842901419512786_3781900613172854784_n.jpg" alt="Recuerdo 3">
+            <figcaption>Fotos de recuerdos - Jhoan Meza 6</figcaption>
+        </figure> 
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

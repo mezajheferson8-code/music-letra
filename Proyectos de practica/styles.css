@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
+
+:root {
+    --blanc: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Nunito", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Asegúrate de tener una imagen en la carpeta img */
+    background: url('img/hoerwin56-headphones-3683983.jpg') no-repeat center center/cover;
+    position: relative;
+}
+
+/* Capa oscura sobre el fondo */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.reproductor-musica {
+    position: relative;
+    z-index: 1;
+    width: 350px;
+    padding: 40px;
+    text-align: center;
+    color: var(--blanc);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px); /* Efecto cristal */
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+}
+
+.reproduction-music h1 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.reproduction-music p {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+#progreso {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    accent-color: var(--blanc);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--blanc);
+    color: var(--blanc);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.controls .boton-reproducir-pausar {
+    width: 70px;
+    height: 70px;
+    background: var(--blanc);
+    color: #000;
+    font-size: 2.2rem;
+}
+
+.controls button:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}

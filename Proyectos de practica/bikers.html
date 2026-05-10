@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Biker - Ruta Eterna</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body {
+            font-family: 'Arial Black', Gadget, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid #f39c12;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            color: #f39c12;
+            letter-spacing: 3px;
+        }
+
+        /* --- CONTENEDOR DE LA GALERÍA --- */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid #333;
+            height: 280px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(40%);
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover {
+            border-color: #f39c12;
+            transform: translateY(-5px);
+        }
+
+        .gallery-item:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .image-overlay { opacity: 1; }
+
+        .image-overlay span { color: #f39c12; font-weight: bold; text-transform: uppercase; }
+
+        /* --- LIGHTBOX CON NAVEGACIÓN --- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .lightbox.active { display: flex; }
+
+        .lightbox-content {
+            max-width: 85%;
+            max-height: 80%;
+            border: 4px solid #333;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 50px;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        /* Botones de Navegación */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f39c12;
+            font-size: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 20px;
+            transition: color 0.3s;
+            z-index: 10001;
+        }
+
+        .nav-btn:hover { color: #fff; }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        footer { text-align: center; padding: 40px; color: #444; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Fotos Bikers</h1>
+        <p>RUTA ETERNA MOTO CLUB | SIGUIENTE PARADA: EL HORIZONTE</p>
+    </header>
+
+    <div class="gallery-container">
+        <div class="gallery-item" onclick="openLightbox(0)">
+            <img src="https://i.pinimg.com/736x/40/54/21/4054210198728274fa0d9d6e48565982.jpg" alt="Amanecer">
+            <div class="image-overlay"><span>Amanecer en la Ruta 40</span></div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox(1)">
+            <img src="https://i.pinimg.com/originals/b6/cf/cc/b6cfcc757c508841c5715fb47e824679.jpg" alt="Chopper">
+            <div class="image-overlay"><span>Detalle Chopper</span></div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox(2)">
+            <img src="https://i.pinimg.com/736x/8c/24/1e/8c241e633bacdd66b4be2b11bf776ecc--motorcycle-couple-tandem.jpg" alt="Sierra">
+            <div class="image-overlay"><span>Parada en la Sierra</span></div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox(3)">
+            <img src="https://i.pinimg.com/originals/db/21/3f/db213f6199ec511906c8ea28f5a28f95.jpg" alt="Equipo">
+            <div class="image-overlay"><span>Listo para rodar</span></div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox(4)">
+            <img src="https://i.pinimg.com/originals/ac/c3/6c/acc36c4bef657b26a629051368aace54.jpg" alt="Curvas">
+            <div class="image-overlay"><span>Curvas en la montaña</span></div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox(5)">
+            <img src="https://i.pinimg.com/originals/8a/11/06/8a1106ccedb03364029647454039fe5f.jpg" alt="Garage">
+            <div class="image-overlay"><span>Reunión en el Garage</span></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ruta Eterna Moto Club. Usa las flechas para navegar.</p>
+    </footer>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close-btn" onclick="closeLightbox()">&times;</span>
+        <span class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</span>
+        <img id="lightbox-img" class="lightbox-content" src="">
+        <span class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</span>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.gallery-item img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateImage();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateImage() {
+            // Animación suave de cambio
+            lightboxImg.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                lightboxImg.src = images[currentIndex].src;
+                lightboxImg.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        function changeImage(direction) {
+            currentIndex += direction;
+            // Ciclo infinito: si llega al final, vuelve al principio
+            if (currentIndex >= images.length) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            updateImage();
+        }
+
+        // Navegación por teclado
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === "ArrowRight") changeImage(1);
+            if (e.key === "ArrowLeft") changeImage(-1);
+            if (e.key === "Escape") closeLightbox();
+        });
+
+        // Cerrar al hacer clic fuera de la imagen
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+    </script>
+</body>
+</html>
